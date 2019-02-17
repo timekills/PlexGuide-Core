@@ -136,10 +136,11 @@
     - name: Creating complete paths
       file: 'path={{item}} state=directory mode=0775 owner=1000 group=1000'
       with_items:
-        - '{{path.stdout}}/complete/{{pgrole}}/tv'
-        - '{{path.stdout}}/complete/{{pgrole}}/movies'
-        - '{{path.stdout}}/complete/{{pgrole}}/ebooks'
-        - '{{path.stdout}}/complete/{{pgrole}}/abooks'
+        - '{{path.stdout}}/downloads/{{pgrole}}/tv'
+        - '{{path.stdout}}/downloads/{{pgrole}}/movies'
+        - '{{path.stdout}}/downloads/{{pgrole}}/ebooks'
+        - '{{path.stdout}}/downloads/{{pgrole}}/abooks'
+        - '{{path.stdout}}/downloads/{{pgrole}}/music'
       ignore_errors: yes
 
     - name: Set nzb watch location

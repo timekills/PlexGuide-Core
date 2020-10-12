@@ -1,8 +1,8 @@
 #!/bin/bash
 #
-# Title:      PlexGuide (Reference Title File)
+# Title:      PGBlitz (Reference Title File)
 # Author(s):  Admin9705
-# URL:        https://plexguide.com - http://github.plexguide.com
+# URL:        https://pgblitz.com - http://github.pgblitz.com
 # GNU:        General Public License v3.0
 ################################################################################
 ---
@@ -20,7 +20,10 @@
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'
       include_tasks: '/opt/coreapps/apps/_core.yml'
-
+      
+    - name: 'Including plugins '
+      include_tasks: '/opt/coreapps/apps/_plugins.yml'
+      
     - name: 'Checking for existing app data'
       stat:
         path: /opt/appdata/tautulli/config.ini
@@ -38,15 +41,17 @@
     - name: 'Setting PG Volumes'
       set_fact:
         pg_volumes:
+          - '/etc/localtime:/etc/localtime:ro'
           - '/opt/appdata/{{pgrole}}:/config'
           - '/opt/appdata/plex/database/Library/Application Support/Plex Media Server/Logs:/logs'
-          - '/opt/appdata/pgrole/scripts:/scripts'
+          - '/opt/appdata/{{pgrole}}/scripts:/scripts'
 
     - name: 'Setting PG ENV'
       set_fact:
         pg_env:
-          PUID: 1000
-          PGID: 1000
+          PUID: '1000'
+          PGID: '1000'
+
 
     # MAIN DEPLOYMENT #############################################################
     - name: 'Deploying {{pgrole}}'
@@ -69,7 +74,7 @@
     # AFTER ########################################################################
     - name: 'Configuring {{pgrole}} for first time use'
       block:
-        - name: 'Wating for {{pgrole}} to start'
+        - name: 'Waiting for {{pgrole}} to start'
           wait_for:
             path: '/opt/appdata/tautulli/config.ini'
             state: present

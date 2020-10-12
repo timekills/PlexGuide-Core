@@ -1,8 +1,8 @@
 #!/bin/bash
 #
-# Title:      PlexGuide (Reference Title File)
+# Title:      PGBlitz (Reference Title File)
 # Author(s):  Admin9705
-# URL:        https://plexguide.com - http://github.plexguide.com
+# URL:        https://pgblitz.com - http://github.pgblitz.com
 # GNU:        General Public License v3.0
 ################################################################################
 ---
@@ -41,15 +41,15 @@
       set_fact:
         pg_volumes:
           - '/etc/localtime:/etc/localtime:ro'
-          - '/opt/appdata/{{pgrole}}:/config'
           - '{{path.stdout}}:{{path.stdout}}'
           - '/mnt:/mnt'
+          - '/opt/appdata/{{pgrole}}:/config'
 
     - name: 'Setting PG ENV'
       set_fact:
         pg_env:
-          PUID: 1000
-          PGID: 1000
+          PUID: '1000'
+          PGID: '1000'
 
     # MAIN DEPLOYMENT #############################################################
     - name: 'Checking for existing app data'
@@ -95,30 +95,13 @@
         value: '{{path.stdout}}/downloads/{{pgrole}}'
         state: present
 
-    - name: Set TempPath when incomplete is defined
-      ini_file:
-        path: '/opt/appdata/{{pgrole}}/qBittorrent/qBittorrent.conf'
-        section: Preferences
-        option: Downloads\TempPath
-        value: '{{incomplete.stdout}}/{{pgrole}}'
-        state: present
-      when: incomplete.stdout | length > 0
-
-    - name: Set TempPath when incomplete is undefined
-      ini_file:
-        path: '/opt/appdata/{{pgrole}}/qBittorrent/qBittorrent.conf'
-        section: Preferences
-        option: Downloads\TempPath
-        value: '{{path.stdout}}/incomplete/{{pgrole}}'
-        state: present
-      when: incomplete.stdout | length == 0
 
     - name: Set TempPathEnabled
       ini_file:
         path: '/opt/appdata/{{pgrole}}/qBittorrent/qBittorrent.conf'
         section: Preferences
         option: Downloads\TempPathEnabled
-        value: true
+        value: True
         state: present
 
     # FIRST TIME CONFIGURATION ####################################################
@@ -129,7 +112,7 @@
             path: '/opt/appdata/{{pgrole}}/qBittorrent/qBittorrent.conf'
             section: AutoRun
             option: enabled
-            value: true
+            value: True
             state: present
 
         - name: Enable Auto UnRar
@@ -185,7 +168,7 @@
             path: '/opt/appdata/{{pgrole}}/qBittorrent/qBittorrent.conf'
             section: Preferences
             option: Queueing\IgnoreSlowTorrents
-            value: true
+            value: True
             state: present
 
         - name: Set MaxActiveDownloads

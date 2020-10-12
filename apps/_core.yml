@@ -1,8 +1,8 @@
 #!/bin/bash
 #
-# Title:      PlexGuide (Reference Title File)
+# Title:      PGBlitz (Reference Title File)
 # Author(s):  Admin9705
-# URL:        https://plexguide.com - http://github.plexguide.com
+# URL:        https://pgblitz.com - http://github.pgblitz.com
 # GNU:        General Public License v3.0
 ################################################################################
 ---
@@ -31,11 +31,6 @@
 - name: Register HD Path
   shell: 'cat /var/plexguide/server.hd.path'
   register: path
-  ignore_errors: True
-
-- name: Register incomplete Path
-  shell: 'cat /var/plexguide/server.incomplete.path'
-  register: incomplete
   ignore_errors: True
 
 - name: Register Auth Path
@@ -97,7 +92,7 @@
 
 - name: 'If Fact Matches - Enable TLD'
   set_fact:
-    tldset: '{{domain.stdout}}'
+    tldset: '{{domain.stdout}},www.{{domain.stdout}}'
   when: 'toplevel.stdout == pgrole'
 
 - debug: msg="TLDSET is now for {{toplevel.stdout}}"
@@ -118,7 +113,7 @@
 
 # FOR AUTHENTICATION
 - name: 'Script Execute Part I'
-  shell: 'bash /opt/plexguide/menu/pgshield/drop.sh'
+  shell: 'bash /opt/pgshield/drop.sh'
 
 - name: 'Script Execute Part II'
   shell: 'cat /var/plexguide/auth.var'
